@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import QGraphicsView, QMainWindow
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPainter
-from item import GraphicItem
+
+from GraphicItem import *
 from edge import Edge
 from static_GraphicItem import *
 import copy
@@ -33,10 +34,10 @@ class GraphicView(QGraphicsView):
         self.setTransformationAnchor(self.AnchorUnderMouse)
         self.setDragMode(self.RubberBandDrag)
 
-        item1 = host()
-        item2 = switch()
-        item3 = server()
-        item4 = router()
+        item1 = static_host()
+        item2 = static_switch()
+        item3 = static_server()
+        item4 = static_router()
 
         item1.setPos(0, 0)
         item2.setPos(150, 10)
@@ -66,26 +67,26 @@ class GraphicView(QGraphicsView):
                 self.gr_scene.remove_node(item)
 
         if event.button() == Qt.MidButton:
-            if isinstance(item, host):
-                if type(item) == host:
+            if isinstance(item, static_host):
+                if type(item) == static_host:
                     host_item = host()
                     host_item.setPos(0, 200)
                     host_item.setFlag(QGraphicsItem.ItemIsMovable)
                     self.gr_scene.add_node(host_item)
-            if isinstance(item, switch):
-                if type(item) == switch:
+            if isinstance(item, static_switch):
+                if type(item) == static_switch:
                     switch_item = switch()
                     switch_item.setPos(150, 200)
                     switch_item.setFlag(QGraphicsItem.ItemIsMovable)
                     self.gr_scene.add_node(switch_item)
-            if isinstance(item, server):
-                if type(item) == server:
+            if isinstance(item, static_server):
+                if type(item) == static_server:
                     server_item = server()
                     server_item.setPos(300, 200)
                     server_item.setFlag(QGraphicsItem.ItemIsMovable)
                     self.gr_scene.add_node(server_item)
-            if isinstance(item, router):
-                if type(item) == router:
+            if isinstance(item, static_router):
+                if type(item) == static_router:
                     router_item = router()
                     router_item.setPos(450, 200)
                     router_item.setFlag(QGraphicsItem.ItemIsMovable)

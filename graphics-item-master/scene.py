@@ -3,7 +3,7 @@ import math
 from PyQt5.QtWidgets import QGraphicsScene
 from PyQt5.QtGui import QColor, QPen
 from PyQt5.QtCore import QLine
-from toolbar import ToolBarDemo
+
 
 
 class GraphicScene(QGraphicsScene):

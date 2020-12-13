@@ -4,10 +4,8 @@ import cgitb
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow
-
 from scene import GraphicScene
 from view import GraphicView
-
 cgitb.enable(format("text"))
 
 
