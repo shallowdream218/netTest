@@ -13,8 +13,9 @@ class Edge:
         self.start_item = start_item
         self.end_item = end_item
 
+        # 线条图像在此处创建
         self.gr_edge = GraphicEdge(self)
-        # add edge on graphic scene
+        # 此类一旦被初始化就再添加进scene
         self.scene.add_edge(self.gr_edge)
 
         if self.start_item is not None:
@@ -53,9 +54,11 @@ class GraphicEdge(QGraphicsPathItem):
         self.pos_src = [0, 0]
         self.pos_dst = [0, 0]
 
+        # 画线条的
         self._pen = QPen(QColor("#000"))
         self._pen.setWidthF(self.width)
 
+        # 画拖拽线条时线条的
         self._pen_dragging = QPen(QColor("#000"))
         self._pen_dragging.setStyle(Qt.DashDotLine)
         self._pen_dragging.setWidthF(self.width)
@@ -66,8 +69,8 @@ class GraphicEdge(QGraphicsPathItem):
         self._mark_brush.setColor(Qt.green)
         self._mark_brush.setStyle(Qt.SolidPattern)
 
-        self.setFlag(QGraphicsItem.ItemIsSelectable)
-        self.setZValue(-1)
+        self.setFlag(QGraphicsItem.ItemIsSelectable)  # 线条可选
+        self.setZValue(-1)  # 让线条出现在所有图元的最下层
 
     def set_src(self, x, y):
         self.pos_src = [x, y]
@@ -76,8 +79,8 @@ class GraphicEdge(QGraphicsPathItem):
         self.pos_dst = [x, y]
 
     def calc_path(self):
-        path = QPainterPath(QPointF(self.pos_src[0], self.pos_src[1]))
-        path.lineTo(self.pos_dst[0], self.pos_dst[1])
+        path = QPainterPath(QPointF(self.pos_src[0], self.pos_src[1])) # 起点
+        path.lineTo(self.pos_dst[0], self.pos_dst[1]) # 终点
         return path
 
     def boundingRect(self):

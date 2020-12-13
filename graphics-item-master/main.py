@@ -15,14 +15,20 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-
         self.scene = GraphicScene(self)
         self.view = GraphicView(self.scene, self)
+        self.view.setGeometry(100, 100, 820, 520)
+        self.scene.setSceneRect(100, 100, 800, 500)
+        # self.scene.setBackgroundBrush(Qt.gray)
+        # self.view.setBackgroundBrush(Qt.red)
 
-        self.setMinimumHeight(500)
-        self.setMinimumWidth(500)
+        # 设置view可以进行鼠标的拖拽选择
+        # self.view.setDragMode(self.view.RubberBandDrag)
+
+        self.setMinimumHeight(800)
+        self.setMinimumWidth(1500)
         self.setCentralWidget(self.view)
-        self.setWindowTitle("Graphics Demo")
+        self.setWindowTitle("Demo")
 
 
 def demo_run():

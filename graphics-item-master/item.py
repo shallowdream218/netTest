@@ -13,7 +13,6 @@ class GraphicItem(QGraphicsPixmapItem):
         self.setFlag(QGraphicsItem.ItemIsSelectable)
         self.setFlag(QGraphicsItem.ItemIsMovable)
 
-
     def mouseMoveEvent(self, event):
         super().mouseMoveEvent(event)
         # update selected node and its edge

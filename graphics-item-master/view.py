@@ -1,10 +1,11 @@
-from PyQt5.QtWidgets import QGraphicsView
+from PyQt5.QtWidgets import QGraphicsView, QMainWindow
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPainter
 from item import GraphicItem
 from edge import Edge
-from static_GraphicItem import static_GraphicItem
+from static_GraphicItem import *
 import copy
+
 
 class GraphicView(QGraphicsView):
 
@@ -31,38 +32,75 @@ class GraphicView(QGraphicsView):
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setTransformationAnchor(self.AnchorUnderMouse)
         self.setDragMode(self.RubberBandDrag)
-        item = static_GraphicItem()
 
-        item.setPos(0, 0)
+        item1 = host()
+        item2 = switch()
+        item3 = server()
+        item4 = router()
 
-        self.gr_scene.addItem(item)
+        item1.setPos(0, 0)
+        item2.setPos(150, 10)
+        item3.setPos(300, 0)
+        item4.setPos(450, 0)
+
+        self.gr_scene.addItem(item1)
+        self.gr_scene.addItem(item2)
+        self.gr_scene.addItem(item3)
+        self.gr_scene.addItem(item4)
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_N:
-            item = GraphicItem()
-            item.setPos(25, 25)
-            self.gr_scene.add_node(item)
         if event.key() == Qt.Key_E:
             self.edge_enable = ~self.edge_enable
 
     def mousePressEvent(self, event):
         item = self.get_item_at_click(event)
+
         if event.button() == Qt.RightButton:
-            if isinstance(item, GraphicItem):
+            if isinstance(item, host):
+                self.gr_scene.remove_node(item)
+            if isinstance(item, switch):
+                self.gr_scene.remove_node(item)
+            if isinstance(item, server):
+                self.gr_scene.remove_node(item)
+            if isinstance(item, router):
                 self.gr_scene.remove_node(item)
 
         if event.button() == Qt.MidButton:
-            if isinstance(item, static_GraphicItem):
-                if type(item) == static_GraphicItem:
-                    new_item = GraphicItem()
-                    new_item.setPos(80, 80)
-                    self.gr_scene.add_node(new_item)
-
-
+            if isinstance(item, host):
+                if type(item) == host:
+                    host_item = host()
+                    host_item.setPos(0, 200)
+                    host_item.setFlag(QGraphicsItem.ItemIsMovable)
+                    self.gr_scene.add_node(host_item)
+            if isinstance(item, switch):
+                if type(item) == switch:
+                    switch_item = switch()
+                    switch_item.setPos(150, 200)
+                    switch_item.setFlag(QGraphicsItem.ItemIsMovable)
+                    self.gr_scene.add_node(switch_item)
+            if isinstance(item, server):
+                if type(item) == server:
+                    server_item = server()
+                    server_item.setPos(300, 200)
+                    server_item.setFlag(QGraphicsItem.ItemIsMovable)
+                    self.gr_scene.add_node(server_item)
+            if isinstance(item, router):
+                if type(item) == router:
+                    router_item = router()
+                    router_item.setPos(450, 200)
+                    router_item.setFlag(QGraphicsItem.ItemIsMovable)
+                    self.gr_scene.add_node(router_item)
 
         elif self.edge_enable:
-            if isinstance(item, GraphicItem):
+            if isinstance(item, host):
                 self.edge_drag_start(item)
+            if isinstance(item, switch):
+                self.edge_drag_start(item)
+            if isinstance(item, server):
+                self.edge_drag_start(item)
+            if isinstance(item, router):
+                self.edge_drag_start(item)
+
         else:
             super().mousePressEvent(event)
 
@@ -72,6 +110,7 @@ class GraphicView(QGraphicsView):
         item = self.itemAt(pos)
         return item
 
+    # 这个方法是删除选中的所有图元，原来这个方法是可以的，因为它就一个类型的图元。而现在有四种类型的图元，而参数只有一个，所以这个删除是不可以的。
     def get_items_at_rubber(self):
         """ Get group select items. """
         area = self.rubberBandRect()
@@ -87,10 +126,19 @@ class GraphicView(QGraphicsView):
 
     def mouseReleaseEvent(self, event):
         if self.edge_enable:
+            # 拖拽结束后，关闭此功能
             self.edge_enable = False
             item = self.get_item_at_click(event)
-            if isinstance(item, GraphicItem) and item is not self.drag_start_item:
+            # 终点图元不能是起点图元，即无环图
+            if isinstance(item, host) and item is not self.drag_start_item:
                 self.edge_drag_end(item)
+            if isinstance(item, switch) and item is not self.drag_start_item:
+                self.edge_drag_end(item)
+            if isinstance(item, server) and item is not self.drag_start_item:
+                self.edge_drag_end(item)
+            if isinstance(item, router) and item is not self.drag_start_item:
+                self.edge_drag_end(item)
+
             else:
                 self.drag_edge.remove()
                 self.drag_edge = None
