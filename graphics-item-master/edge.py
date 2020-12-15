@@ -70,7 +70,7 @@ class GraphicEdge(QGraphicsPathItem):
         self._mark_brush.setStyle(Qt.SolidPattern)
 
         self.setFlag(QGraphicsItem.ItemIsSelectable)  # 线条可选
-        self.setZValue(-1)  # 让线条出现在所有图元的最下层
+        self.setZValue(1)  # 让线条出现在所有图元的最下层
 
     def set_src(self, x, y):
         self.pos_src = [x, y]
